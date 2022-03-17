@@ -63,13 +63,30 @@
             <thead>
               <tr>
                 <th class="col-md-6" scope="col">Test Name</th>
-                <th class="col-md-6" scope="col">Prow Link</th>
+                <th class="col-md-1" scope="col">CI Links</th>
+                <th class="col-md-5" scope="col">Prow Link</th>
               </tr>
             </thead>
             <tbody>
               {{- range $i, $d := .}} {{- if gt (len $d) 1 }}
               <tr class="table-action">
                 <td scope="row">{{$i}}</td>
+                <td>
+                  <div class="list-group">
+                    <a
+                      href="{{ $i | searchCI "" }}"
+                      target="_blank"
+                      class="list-group-item list-group-item-primary"
+                      >Search</a
+                    >
+                                        <a
+                      href="{{ $i | searchCI "chart" }}"
+                      target="_blank"
+                      class="list-group-item list-group-item-success"
+                      >Chart</a
+                    >
+                  </div>
+                </td>
                 <td>
                   <div class="list-group">
                     {{ range $i, $v := $d}}
@@ -97,13 +114,30 @@
             <thead>
               <tr>
                 <th class="col-md-6" scope="col">Test Name</th>
-                <th class="col-md-6" scope="col">Prow Link</th>
+                <th class="col-md-1" scope="col">CI Links</th>
+                <th class="col-md-5" scope="col">Prow Link</th>
               </tr>
             </thead>
             <tbody>
               {{- range $i, $d := .}} {{- if eq (len $d) 1 }}
               <tr class="table-action">
                 <td scope="row">{{$i}}</td>
+                <td>
+                  <div class="list-group">
+                    <a
+                      href="{{ $i | searchCI "" }}"
+                      target="_blank"
+                      class="list-group-item list-group-item-primary"
+                      >Search</a
+                    >
+                                        <a
+                      href="{{ $i | searchCI "chart" }}"
+                      target="_blank"
+                      class="list-group-item list-group-item-success"
+                      >Chart</a
+                    >
+                  </div>
+                </td>
                 <td>
                   <div class="list-group">
                     {{ range $i, $v := $d}}

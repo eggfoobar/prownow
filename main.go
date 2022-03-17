@@ -12,6 +12,7 @@ import (
 	"math/big"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
 	"regexp"
@@ -35,6 +36,7 @@ const (
 	testGridDashboardSummary = "https://testgrid.k8s.io/%s/summary"
 	testGridDashboardList    = "https://testgrid.k8s.io/q/list"
 	prowURL                  = "https://prow.ci.openshift.org/view/gs/origin-ci-test/logs/%s"
+	searchCIurl              = "https://search.ci.openshift.org/%s?search=%s&maxAge=48h&context=1&type=bug%%2Bjunit&name=&excludeName=&maxMatches=5&maxBytes=20971520&groupBy=job"
 )
 
 //go:embed template_merged.md
@@ -253,6 +255,21 @@ func styledURL(link string, i interface{}) string {
 	}
 }
 
+func escape(query string) string {
+	query = strings.ReplaceAll(query, "[", "\\[")
+	query = strings.ReplaceAll(query, "]", "\\]")
+	return url.QueryEscape(query)
+}
+
+func searchCI(searchType, query string) string {
+	switch strings.ToLower(strings.TrimSpace(searchType)) {
+	case "chart":
+		return fmt.Sprintf(searchCIurl, "chart", escape(query))
+	default:
+		return fmt.Sprintf(searchCIurl, "", escape(query))
+	}
+}
+
 func html(str string) template.HTML {
 	return template.HTML(str)
 }
@@ -394,6 +411,7 @@ func main() {
 					"html":            html,
 					"colorFromString": colorFromString,
 					"emojiFromString": emojiFromString,
+					"searchCI":        searchCI,
 				}).
 				Funcs(sprig.FuncMap()).
 				Parse(templateMerged)).

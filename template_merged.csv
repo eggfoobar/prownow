@@ -1,5 +1,5 @@
 Test Name, Prow Link
 {{- range $i, $d := .}}
-{{$i}},"{{ range $i, $v := $d}}{{ $v | rawURL }} 
+"{{$i}}","{{ range $i, $v := $d}}{{ $v | rawURL }}
 {{ end}}"
 {{- end}}
